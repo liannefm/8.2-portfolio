@@ -1,0 +1,130 @@
+/* ===================== DESKTOP / WALLPAPER ===================== */
+.os {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  background:
+    radial-gradient(120% 90% at 85% -10%, #28309e 0%, rgba(40,48,158,0) 55%),
+    radial-gradient(90% 80% at 10% 110%, #1c2492 0%, rgba(28,36,146,0) 55%),
+    var(--navy);
+  overflow: hidden;
+}
+.desktop {
+  position: relative; flex: 1 1 auto; overflow: hidden;
+}
+.desktop::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1.5px, transparent 1.5px);
+  background-size: 26px 26px; opacity: .9;
+}
+.wallmark {
+  position: absolute; left: 50%; top: 46%;
+  transform: translate(-50%,-50%) rotate(-4deg);
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(80px, 19vw, 290px); line-height: .82;
+  letter-spacing: -.04em; text-align: center;
+  color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,.07);
+  pointer-events: none; user-select: none; white-space: nowrap;
+}
+.wallmark b { display: block; color: rgba(255,255,255,.045); -webkit-text-stroke: 0; }
+
+/* floating stickers */
+.sticker {
+  position: absolute; pointer-events: none; user-select: none;
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+  padding: 6px 12px; border: 2.5px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(8,10,40,.4);
+  transform: rotate(var(--rot,-6deg));
+}
+.sticker.s1 { left: 5%;  top: 14%; background: var(--pink);  color: #fff;       --rot: -8deg; }
+.sticker.s2 { right: 6%; top: 24%; background: var(--yellow); color: var(--ink); --rot: 7deg; }
+.sticker.s3 { left: 8%;  bottom: 9%; background: var(--lime); color: var(--ink); --rot: 5deg; }
+
+/* ===================== DESKTOP ICONS ===================== */
+.icons {
+  position: absolute; inset: 0; padding: 22px;
+  display: flex; flex-direction: column; flex-wrap: wrap;
+  align-content: flex-start; gap: 6px; max-height: 100%;
+}
+.icon {
+  width: 92px; padding: 10px 6px 8px; border: none; background: transparent;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  border-radius: 8px; color: #fff; text-align: center;
+}
+.icon:hover { background: rgba(255,255,255,.09); }
+.icon:focus-visible { outline: 2px solid var(--yellow); }
+.icon .glyph {
+  width: 54px; height: 46px; position: relative; filter: drop-shadow(2px 3px 0 rgba(8,10,40,.4));
+}
+.icon .label {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 700;
+  letter-spacing: .02em; line-height: 1.15;
+  background: rgba(10,15,71,.55); padding: 2px 5px; border-radius: 3px;
+}
+/* CSS folder shape */
+.folder { width: 100%; height: 100%; }
+.folder .body {
+  position: absolute; left: 0; bottom: 0; width: 100%; height: 78%;
+  background: var(--fc,#ffd02e); border: 2.5px solid var(--ink); border-radius: 4px 6px 6px 6px;
+}
+.folder .tab {
+  position: absolute; left: 4px; top: 2px; width: 46%; height: 34%;
+  background: var(--fc,#ffd02e); border: 2.5px solid var(--ink); border-radius: 5px 8px 0 0;
+  border-bottom: none;
+}
+.folder .seam {
+  position: absolute; left: 5px; right: 5px; top: 42%; height: 0;
+  border-top: 2px solid rgba(8,10,40,.25);
+}
+.icon .photochip {
+  width: 48px; height: 48px; border: 2.5px solid var(--ink); border-radius: 8px;
+  background: var(--pink); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 900; color: #fff; font-size: 24px;
+  filter: drop-shadow(2px 3px 0 rgba(8,10,40,.4));
+}
+
+/* ===================== DESKTOP MASCOT ===================== */
+.mascot {
+  position: absolute; right: 2%; bottom: 40px; z-index: 5;
+  width: clamp(260px, 26vw, 460px);
+  display: flex; flex-direction: column; align-items: center;
+  pointer-events: none; user-select: none;
+}
+.mascot .char {
+  position: relative; z-index: 2; width: 100%; cursor: pointer; pointer-events: auto;
+  filter: drop-shadow(0 14px 16px rgba(8,10,40,.45));
+  transform-origin: 50% 100%;
+  transition: transform .25s cubic-bezier(.2,.9,.3,1.3);
+}
+.mascot .char:hover { transform: translateY(-4px); }
+.mascot .char:active { transform: translateY(-1px) scale(.99); }
+.mascot .bubble {
+  position: absolute; bottom: calc(100% - 6px); left: 50%; transform: translateX(-50%) translateY(6px);
+  background: var(--cream); color: var(--ink); border: 2.5px solid var(--ink); border-radius: 12px;
+  padding: 9px 14px; font-family: var(--font-mono); font-weight: 700; font-size: 12.5px; white-space: nowrap;
+  box-shadow: var(--shadow-hard); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 3;
+}
+.mascot .bubble::after {
+  content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+  border: 8px solid transparent; border-top-color: var(--ink);
+}
+.mascot.greet .bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
+.mascot .platform {
+  position: relative; z-index: 1; width: 70%; margin-top: -22px;
+}
+.platform .coin {
+  position: relative; width: 100%; aspect-ratio: 5/2; border-radius: 50%;
+  background: radial-gradient(72% 86% at 50% 32%, #2b34b0 0%, #1d2596 55%, #161d7a 100%);
+  border: 3px solid var(--ink);
+  box-shadow: 0 6px 0 var(--ink), 0 18px 24px -8px rgba(8,10,40,.7);
+}
+.platform .tagchip {
+  position: absolute; left: 50%; top: calc(100% + 10px); transform: translateX(-50%);
+  font-family: var(--font-display); font-weight: 800; font-size: 14px; color: #fff;
+  background: var(--ink); border: 2.5px solid var(--yellow); border-radius: 20px; padding: 5px 16px;
+  white-space: nowrap; z-index: 4; box-shadow: 3px 3px 0 rgba(8,10,40,.4);
+}
+@media (max-width: 1100px) { .mascot { width: clamp(210px,24vw,300px); } }
+@media (max-width: 768px) { .mascot { display: none; } }
+
+/* mobile top bar */
+.m-topbar { display: none; }

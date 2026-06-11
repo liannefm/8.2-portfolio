@@ -1,0 +1,245 @@
+/* ============================================================
+   phone.css — LianneOS Mobile (phone re-skin of the portfolio)
+   Reuses styles.css tokens + section styles; adds phone chrome.
+   ============================================================ */
+
+/* ---------- stage: clean backdrop behind the device ---------- */
+.phone-stage{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:12px;
+  background:#ffffff;
+  overflow:hidden;
+}
+/* floating sticker notes inside the home screen */
+.home-sticker{
+  position:absolute; z-index:5; pointer-events:none; user-select:none;
+  font-family:var(--font-mono); font-weight:700; font-size:12.5px; color:var(--ink);
+  padding:7px 12px; border:2.5px solid var(--ink); border-radius:3px;
+  box-shadow:4px 4px 0 rgba(8,10,40,.4); transform:rotate(var(--rot,-6deg)); line-height:1.25;
+}
+.home-sticker small{ display:block; font-size:10px; opacity:.72; font-weight:700; }
+.home-sticker.s1{ left:24px;  top:392px; background:var(--pink);   color:#fff; --rot:-8deg; }
+.home-sticker.s2{ right:26px; top:450px; background:var(--yellow);              --rot:7deg; }
+.home-sticker.s3{ left:36px;  top:556px; background:var(--lime);                --rot:5deg; }
+.home-sticker.s4{ right:30px; top:606px; background:var(--cream);               --rot:-5deg; }
+
+/* ---------- the device (fixed design size, scaled to fit) ---------- */
+.phone{
+  position:relative; flex:0 0 auto;
+  width:404px; height:876px;
+  transform:scale(var(--phone-scale, 1));
+  transform-origin:center center;
+  background:linear-gradient(150deg,#1b1f3d,#080a22);
+  border:3px solid #000;
+  border-radius:58px;
+  padding:13px;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.06) inset,
+    24px 30px 60px -18px rgba(0,0,0,.7),
+    var(--shadow-hard);
+}
+/* side buttons */
+.phone::before{
+  content:""; position:absolute; left:-6px; top:160px; width:6px; height:56px;
+  background:#05060f; border-radius:4px 0 0 4px; box-shadow:0 78px 0 #05060f;
+}
+.phone::after{
+  content:""; position:absolute; right:-6px; top:200px; width:6px; height:78px;
+  background:#05060f; border-radius:0 4px 4px 0;
+}
+
+.phone-screen{
+  position:relative; width:100%; height:100%;
+  border-radius:46px; overflow:hidden;
+  display:flex; flex-direction:column;
+  background:
+    radial-gradient(120% 80% at 80% -5%, #2a32a6 0%, rgba(42,50,166,0) 52%),
+    radial-gradient(90% 70% at 5% 108%, #1c2492 0%, rgba(28,36,146,0) 52%),
+    var(--navy);
+}
+.phone-screen .scr-grid{
+  position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1.4px, transparent 1.4px);
+  background-size:22px 22px;
+}
+
+/* dynamic island */
+.island{
+  position:absolute; top:11px; left:50%; transform:translateX(-50%);
+  width:112px; height:30px; background:#000; border-radius:16px; z-index:80;
+}
+.island::after{
+  content:""; position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  width:9px; height:9px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #2b3a66, #05060f 70%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.08);
+}
+
+/* ---------- status bar (shared) ---------- */
+.statusbar{
+  position:relative; z-index:70; flex:0 0 auto;
+  height:50px; display:flex; align-items:flex-end; justify-content:space-between;
+  padding:0 26px 7px;
+  font-family:var(--font-mono); font-weight:700; font-size:14px; letter-spacing:.02em;
+  color:var(--cream);
+}
+.statusbar .sb-right{ display:flex; align-items:center; gap:7px; }
+.sb-bars{ display:flex; align-items:flex-end; gap:2px; height:12px; }
+.sb-bars i{ width:3px; background:currentColor; border-radius:1px; }
+.sb-bars i:nth-child(1){ height:5px; }
+.sb-bars i:nth-child(2){ height:8px; }
+.sb-bars i:nth-child(3){ height:11px; }
+.sb-bars i:nth-child(4){ height:14px; opacity:.4; }
+.sb-batt{
+  width:24px; height:13px; border:1.6px solid currentColor; border-radius:3px;
+  position:relative; padding:1.6px;
+}
+.sb-batt::after{ content:""; position:absolute; right:-3.2px; top:50%; transform:translateY(-50%);
+  width:2px; height:5px; background:currentColor; border-radius:0 1px 1px 0; }
+.sb-batt span{ display:block; height:100%; width:78%; background:currentColor; border-radius:1px; }
+.statusbar.dark{ color:var(--cream); }
+
+/* ===================== HOME SCREEN ===================== */
+.home{
+  position:absolute; inset:0; z-index:20;
+  display:flex; flex-direction:column;
+  transition:opacity .26s ease, transform .26s ease;
+}
+.home.dimmed{ opacity:0; transform:scale(.97); pointer-events:none; }
+
+.home-head{
+  flex:0 0 auto; padding:6px 24px 14px;
+  display:flex; align-items:center; gap:12px;
+}
+.home-av{
+  width:46px; height:46px; border-radius:13px; background:var(--pink);
+  border:2.5px solid var(--cream); box-shadow:3px 3px 0 rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:900; font-size:24px; color:#fff;
+}
+.home-hi{ display:flex; flex-direction:column; line-height:1.15; }
+.home-hi b{ font-family:var(--font-display); font-weight:800; font-size:18px; color:var(--cream); }
+.home-hi span{ font-family:var(--font-mono); font-size:11px; color:var(--yellow); letter-spacing:.03em; }
+.home-head .langswitch{ margin-left:auto; }
+
+/* app grid */
+.app-grid{
+  flex:1 1 auto; align-content:flex-start;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:20px 6px; padding:14px 18px 6px;
+}
+.app{
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  background:none; border:none; padding:0; -webkit-tap-highlight-color:transparent;
+}
+.app-ico{
+  width:60px; height:60px; border-radius:17px;
+  border:2.5px solid var(--ink); box-shadow:3px 3px 0 rgba(0,0,0,.42);
+  display:flex; align-items:center; justify-content:center;
+  background:var(--app-bg); color:var(--app-fg);
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.app-ico svg{ width:30px; height:30px; }
+.app:active .app-ico{ transform:translate(1px,1px); box-shadow:1px 1px 0 rgba(0,0,0,.42); }
+.app-label{
+  font-family:var(--font-body); font-weight:600; font-size:11.5px; color:var(--cream);
+  max-width:74px; text-align:center; line-height:1.1;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+/* dock */
+.dock{
+  flex:0 0 auto; margin:0 16px 8px; padding:14px 12px;
+  display:flex; justify-content:space-around;
+  background:rgba(245,241,230,.12); border:2px solid rgba(245,241,230,.18);
+  border-radius:28px; backdrop-filter:blur(8px);
+}
+.dock .app-label{ display:none; }
+.dock .app-ico{ width:54px; height:54px; }
+
+/* home indicator */
+.home-bar{
+  flex:0 0 auto; height:26px; display:flex; align-items:center; justify-content:center;
+}
+.home-bar button{
+  width:126px; height:5px; border-radius:3px; border:none;
+  background:rgba(245,241,230,.55);
+}
+
+/* ===================== APP VIEW ===================== */
+.phone-app{
+  position:absolute; inset:0; z-index:60;
+  display:flex; flex-direction:column;
+  background:var(--cream);
+  transform-origin:center;
+  opacity:0; transform:scale(.9);
+  transition:opacity .28s ease, transform .28s cubic-bezier(.2,.8,.25,1);
+  pointer-events:none;
+}
+.phone-app.show{ opacity:1; transform:scale(1); pointer-events:auto; }
+
+.app-head{
+  flex:0 0 auto; background:var(--navy-deep); color:var(--cream);
+  border-bottom:3px solid var(--accent);
+}
+.app-nav{
+  display:flex; align-items:center; gap:10px; padding:6px 16px 12px;
+}
+.app-nav .back{
+  width:34px; height:34px; border-radius:10px; border:2px solid var(--cream);
+  background:transparent; color:var(--cream); font-size:20px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.app-nav .a-dot{ width:11px; height:11px; border-radius:50%; background:var(--accent);
+  border:2px solid var(--cream); flex:0 0 auto; }
+.app-nav .a-title{ font-family:var(--font-display); font-weight:800; font-size:17px; white-space:nowrap; }
+.app-nav .a-path{ margin-left:auto; font-family:var(--font-mono); font-size:10px; color:rgba(245,241,230,.5); }
+
+.phone-body{
+  flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:18px 16px 88px;
+}
+.app-home-bar{
+  position:absolute; left:0; right:0; bottom:0; height:30px; z-index:5;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(to top, var(--cream) 40%, rgba(245,241,230,0));
+}
+.app-home-bar button{
+  width:126px; height:5px; border-radius:3px; border:none; background:rgba(16,18,46,.45);
+}
+
+/* ---------- phone-scoped section layout (mobile rules at any viewport) ---------- */
+.phone-body .section{ max-width:none; padding:0; }
+.phone-body .sec-title{ font-size:30px; }
+.phone-body .lead{ font-size:14px; max-width:none; }
+.phone-body .about-grid{ grid-template-columns:1fr; gap:18px; }
+.phone-body .photo{ max-width:100%; }
+/* about — centered, stacked layout on the phone */
+.phone-body .about-hero{ flex-direction:column; align-items:stretch; gap:6px; }
+.phone-body .about-char{ width:200px; align-self:center; margin-top:10px; }
+.phone-body .about-row{ flex-direction:column; align-items:center; gap:22px; margin-top:22px; }
+.phone-body .about-side{ width:100%; flex:1 1 auto; }
+.phone-body .polaroid{ width:190px; transform:rotate(-2deg); }
+.phone-body .callout{ font-size:17px; }
+.phone-body .proj-grid{ grid-template-columns:1fr; }
+.phone-body .work-card{ flex-direction:column; }
+.phone-body .work-shot{
+  flex:0 0 auto; border-right:none; border-bottom:2.5px solid var(--ink);
+  aspect-ratio:16/9; min-height:0;
+}
+.phone-body .cv-wrap{ padding:0; }
+.phone-body .cvx-head{ max-width:none; flex-direction:column; align-items:flex-start; gap:12px; }
+.phone-body .cvx-doc{ grid-template-columns:1fr; max-width:none; }
+.phone-body .cvx-side{ padding:22px 18px; }
+.phone-body .cvx-main{ padding:22px 18px 26px; }
+.phone-body .cvx-head .sec-title{ white-space:normal; }
+.phone-body .work-detail .sec-title{ font-size:26px; }
+.phone-body .wd-grid{ grid-template-columns:1fr; }
+.phone-body .wd-hero{ max-height:300px; }
+.phone-body .wd-hero img{ max-height:300px; }
+
+/* toast lives inside the phone screen */
+.phone-screen .toast{
+  position:absolute; bottom:54px; z-index:200;
+}

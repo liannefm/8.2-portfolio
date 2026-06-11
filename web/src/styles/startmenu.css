@@ -1,0 +1,24 @@
+/* ===================== START MENU ===================== */
+.startmenu {
+  position: absolute; left: 12px; bottom: calc(var(--tb-h) + 8px); z-index: 9500;
+  width: 300px; background: var(--cream); border: 2.5px solid var(--ink);
+  border-radius: 12px; box-shadow: var(--shadow-hard); overflow: hidden;
+}
+.startmenu .sm-head {
+  background: var(--ink); color: var(--cream); padding: 16px 16px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.startmenu .sm-head .av {
+  width: 42px; height: 42px; border-radius: 8px; background: var(--pink); border: 2px solid var(--cream);
+  display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 22px;
+}
+.startmenu .sm-head b { font-family: var(--font-display); font-weight: 800; font-size: 17px; display: block; }
+.startmenu .sm-head span { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.7); }
+.sm-list { padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+.sm-list button {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: none; background: transparent;
+  border-radius: 8px; text-align: left; font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--ink);
+}
+.sm-list button:hover { background: var(--cream-2); }
+.sm-list .si { width: 26px; height: 22px; flex: 0 0 auto; position: relative; }
+.sm-foot { border-top: 2px solid var(--cream-2); padding: 10px 14px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }

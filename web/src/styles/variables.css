@@ -1,0 +1,23 @@
+:root {
+  --navy:        #161d7a;
+  --navy-2:      #101663;
+  --navy-deep:   #0a0f47;
+  --ink:         #10122e;
+  --cream:       #f5f1e6;
+  --cream-2:     #e9e3d1;
+  --cream-3:     #dcd4bd;
+  --pink:        #ff2e97;
+  --pink-deep:   #d6157a;
+  --yellow:      #ffe01a;
+  --lime:        #aef23a;
+  --blue:        #3b6cff;
+  --muted:       #5a5d77;
+
+  --tb-h:        56px;
+  --shadow-hard: 7px 7px 0 rgba(8,10,40,.45);
+  --shadow-soft: 0 18px 40px -12px rgba(8,10,40,.7);
+
+  --font-display:'Archivo', sans-serif;
+  --font-body:   'DM Sans', sans-serif;
+  --font-mono:   'Space Mono', monospace;
+}

@@ -1,0 +1,21 @@
+/* ===================== LARGE MONITORS ===================== */
+@media (min-width: 1500px) {
+  .wallmark { font-size: clamp(220px, 17vw, 360px); }
+  .icons { padding: 30px; gap: 10px; }
+  .icon { width: 104px; }
+  .icon .glyph { width: 62px; height: 52px; }
+  .icon .label { font-size: 12.5px; }
+  .win-body { padding: 34px 40px; }
+  .sec-title { font-size: clamp(38px,3.4vw,56px); }
+  .lead { font-size: 17.5px; max-width: 60ch; }
+  .section { max-width: 780px; }
+  .taskbar { height: 64px; }
+  :root { --tb-h: 64px; }
+  .start { height: 44px; font-size: 16px; }
+  .task-chip, .tray a { height: 42px; }
+  .clock { padding: 10px 14px; }
+}
+@media (min-width: 2000px) {
+  .wallmark { font-size: 380px; }
+  .win-body { padding: 40px 52px; }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lianne — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#161d7a; --ink:#10122e; --cream:#f5f1e6; --cream-2:#e9e3d1; --cream-3:#dcd4bd;
+    --pink:#ff2e97; --pink-deep:#d6157a; --yellow:#ffe01a; --lime:#aef23a; --blue:#3b6cff; --muted:#5a5d77;
+    --fd:'Archivo',sans-serif; --fb:'DM Sans',sans-serif; --fm:'Space Mono',monospace;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:var(--fb); color:var(--ink); background:var(--navy);
+    -webkit-font-smoothing:antialiased; padding:34px 18px; }
+  .topbar{ max-width:920px; margin:0 auto 18px; display:flex; align-items:center; gap:12px; }
+  .topbar a, .topbar button{
+    font-family:var(--fm); font-weight:700; font-size:13px; text-decoration:none; cursor:pointer;
+    padding:9px 15px; border:2.5px solid var(--ink); border-radius:9px; background:var(--cream); color:var(--ink);
+    box-shadow:2px 2px 0 rgba(0,0,0,.4); line-height:1;
+  }
+  .topbar a:hover, .topbar button:hover{ transform:translate(-1px,-1px); box-shadow:3px 3px 0 rgba(0,0,0,.4); }
+  .topbar .print{ background:var(--pink); color:#fff; }
+  .topbar .spacer{ flex:1 1 auto; }
+  .langswitch{ display:flex; border:2.5px solid var(--ink); border-radius:9px; overflow:hidden; box-shadow:2px 2px 0 rgba(0,0,0,.4); }
+  .langswitch a{ border:none; border-radius:0; box-shadow:none; padding:9px 13px; }
+  .langswitch a + a{ border-left:2.5px solid var(--ink); }
+  .langswitch a.on{ background:var(--pink); color:#fff; }
+
+  .sheet{
+    max-width:920px; margin:0 auto; background:var(--cream); color:var(--ink);
+    border:3px solid var(--ink); border-radius:14px; overflow:hidden;
+    box-shadow:10px 10px 0 rgba(8,10,40,.45);
+    display:grid; grid-template-columns:300px 1fr;
+  }
+  /* sidebar */
+  .side{ background:var(--ink); color:var(--cream); padding:34px 28px; }
+  .side .av{
+    width:84px; height:84px; border-radius:14px; background:var(--pink); border:3px solid var(--cream);
+    display:flex; align-items:center; justify-content:center; font-family:var(--fd); font-weight:900; font-size:42px; color:#fff;
+    margin-bottom:18px;
+  }
+  .side h1{ font-family:var(--fd); font-weight:900; font-size:34px; line-height:.95; margin:0 0 4px; letter-spacing:-.02em; }
+  .side .role{ font-family:var(--fm); font-size:12.5px; color:var(--yellow); letter-spacing:.04em; margin-bottom:24px; }
+  .side h2{ font-family:var(--fm); font-weight:700; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(255,255,255,.55); margin:22px 0 10px; }
+  .side .ci{ display:block; font-size:13.5px; line-height:1.7; color:var(--cream); word-break:break-word; }
+  .side .ci a{ color:var(--cream); text-decoration:none; }
+  .pill{ display:inline-block; font-family:var(--fm); font-weight:700; font-size:11.5px; padding:5px 11px;
+    border:2px solid var(--cream); border-radius:20px; margin:0 6px 6px 0; }
+  .langline{ display:flex; align-items:center; justify-content:space-between; margin:7px 0; font-size:13.5px; }
+  .dots i{ display:inline-block; width:9px; height:9px; border-radius:50%; border:1.5px solid var(--cream);
+    margin-left:3px; vertical-align:middle; }
+  .dots i.on{ background:var(--yellow); border-color:var(--yellow); }
+
+  /* main */
+  .main{ padding:34px 34px 38px; }
+  .main .lead{ font-size:15px; line-height:1.6; color:#2a2c44; margin:0 0 6px; }
+  .main h2{ font-family:var(--fd); font-weight:900; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--pink-deep); margin:26px 0 12px; padding-bottom:7px; border-bottom:3px solid var(--ink); }
+  .entry{ position:relative; padding:0 0 16px 18px; }
+  .entry::before{ content:""; position:absolute; left:0; top:6px; width:9px; height:9px; border-radius:50%;
+    background:var(--pink); border:2px solid var(--ink); }
+  .entry .yr{ font-family:var(--fm); font-weight:700; font-size:11.5px; color:var(--muted); }
+  .entry h3{ margin:2px 0 1px; font-family:var(--fd); font-weight:800; font-size:17px; }
+  .entry .org{ font-size:13px; font-weight:600; color:#3a3c54; }
+  .entry p{ margin:5px 0 0; font-size:13px; line-height:1.5; color:#42445c; }
+  .note{ font-family:var(--fm); font-size:11px; color:var(--muted); margin:0 0 10px; }
+  footer{ max-width:920px; margin:16px auto 0; text-align:center; font-family:var(--fm); font-size:11px; color:rgba(255,255,255,.45); }
+
+  @media (max-width:680px){
+    .sheet{ grid-template-columns:1fr; }
+    .side{ padding:28px 22px; }
+  }
+  @media print{
+    @page{ margin:14mm; }
+    body{ background:#fff; padding:0; }
+    .topbar, footer{ display:none !important; }
+    .sheet{ box-shadow:none; border:none; border-radius:0; max-width:none; }
+    .side{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .main h2, .entry::before, .side, .av, .pill{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">&larr; <span data-t="back"></span></a>
+    <button class="print" onclick="window.print()">↧ <span data-t="print"></span></button>
+    <span class="spacer"></span>
+    <span class="langswitch"><a href="?lang=nl" data-lang="nl">NL</a><a href="?lang=en" data-lang="en">EN</a></span>
+  </div>
+
+  <div class="sheet">
+    <aside class="side">
+      <div class="av">L</div>
+      <h1>Lianne</h1>
+      <div class="role">front-end developer</div>
+
+      <h2 data-t="contact"></h2>
+      <span class="ci">lianne@example.com</span>
+      <span class="ci">linkedin.com/in/lianne-dev</span>
+      <span class="ci">github.com/lianne-dev</span>
+      <span class="ci" data-t="location"></span>
+
+      <h2 data-t="skills"></h2>
+      <div>
+        <span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">React</span>
+        <span class="pill">PHP</span><span class="pill">SQL</span>
+      </div>
+
+      <h2 data-t="languages"></h2>
+      <div id="langlist"></div>
+    </aside>
+
+    <main class="main">
+      <h2 data-t="profile"></h2>
+      <p class="lead" data-t="lead"></p>
+
+      <h2 data-t="experience"></h2>
+      <div id="exp"></div>
+
+      <h2 data-t="education"></h2>
+      <div id="edu"></div>
+
+      <h2 data-t="projects"></h2>
+      <div id="proj"></div>
+    </main>
+  </div>
+  <footer>LianneOS · resume</footer>
+
+<script>
+  const DATA = {
+    nl:{
+      back:'Terug naar portfolio', print:'Print / Download PDF',
+      contact:'Contact', location:'Nederland', skills:'Skills', languages:'Talen',
+      profile:'Profiel', experience:'Werkervaring', education:'Opleiding', projects:'Projecten',
+      note:'Voorbeelddata — pas aan naar je eigen gegevens.',
+      lead:'Front-end developer met een passie voor gebruiksvriendelijke interfaces en responsive design. Ik zet ideeën om in snelle, toegankelijke en aantrekkelijke webervaringen.',
+      langs:[['Nederlands',5],['Engels',4]],
+      exp:[
+        {yr:'2024 — heden',h:'Front-end Developer',org:'Bedrijfsnaam (voorbeeld)',p:'Bouwen en onderhouden van responsive web-interfaces in React. Samenwerken met design en backend.'},
+        {yr:'2023 — 2024',h:'Stage Front-end Developer',org:'Bedrijfsnaam (voorbeeld)',p:'Meegebouwd aan klantprojecten met HTML, CSS en PHP. Eerste ervaring met databases (SQL).'},
+      ],
+      edu:[
+        {yr:'2021 — 2025',h:'HBO — Software Development',org:'Hogeschool (voorbeeld)',p:'Specialisatie front-end & web development.'},
+        {yr:'2017 — 2021',h:'MBO — ICT / Applicatieontwikkeling',org:'ROC (voorbeeld)',p:'Basis van programmeren, databases en responsive websites.'},
+      ],
+      proj:[
+        {yr:'mei 2026',h:'Waarderingsapp',p:'App waarmee gebruikers studenten beoordelen (PHP, SQL, React).'},
+        {yr:'apr 2026',h:'Kiosk',p:'Bestel-kiosk voor een vegetarische zaak (React, CSS).'},
+        {yr:'jan 2026',h:'Vuurmeisje & Watermeisje game',p:'Co-op browserspel voor twee spelers (JavaScript).'},
+        {yr:'mei 2025',h:'Webshop',p:'Webshop met winkelmandje en afrekenflow (HTML, CSS, PHP).'},
+        {yr:'dec 2024',h:'Eerste webpagina',p:'Eerste statische webpagina (HTML, CSS).'},
+      ],
+    },
+    en:{
+      back:'Back to portfolio', print:'Print / Save as PDF',
+      contact:'Contact', location:'Netherlands', skills:'Skills', languages:'Languages',
+      profile:'Profile', experience:'Experience', education:'Education', projects:'Projects',
+      note:'Sample data — replace with your own details.',
+      lead:'Front-end developer passionate about user-friendly interfaces and responsive design. I turn ideas into fast, accessible and attractive web experiences.',
+      langs:[['Dutch',5],['English',4]],
+      exp:[
+        {yr:'2024 — now',h:'Front-end Developer',org:'Company name (sample)',p:'Building and maintaining responsive web interfaces in React. Working closely with design and backend.'},
+        {yr:'2023 — 2024',h:'Front-end Developer Intern',org:'Company name (sample)',p:'Helped build client projects with HTML, CSS and PHP. First experience with databases (SQL).'},
+      ],
+      edu:[
+        {yr:'2021 — 2025',h:'BSc — Software Development',org:'University (sample)',p:'Specialised in front-end & web development.'},
+        {yr:'2017 — 2021',h:'Vocational — IT / Application Development',org:'College (sample)',p:'Foundations of programming, databases and responsive websites.'},
+      ],
+      proj:[
+        {yr:'May 2026',h:'Rating app',p:'App that lets users rate students (PHP, SQL, React).'},
+        {yr:'Apr 2026',h:'Kiosk',p:'Self-order kiosk for a vegetarian eatery (React, CSS).'},
+        {yr:'Jan 2026',h:'Fireboy & Watergirl game',p:'Co-op browser game for two players (JavaScript).'},
+        {yr:'May 2025',h:'Webshop',p:'Webshop with shopping cart and checkout flow (HTML, CSS, PHP).'},
+        {yr:'Dec 2024',h:'First web page',p:'First static web page (HTML, CSS).'},
+      ],
+    },
+  };
+
+  const params = new URLSearchParams(location.search);
+  const lang = (params.get('lang') === 'en') ? 'en' : 'nl';
+  const D = DATA[lang];
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = D[el.getAttribute('data-t')]; });
+  document.querySelectorAll('[data-lang]').forEach(el => { if(el.getAttribute('data-lang') === lang) el.classList.add('on'); });
+
+  const dots = n => '<span class="dots">' + [0,1,2,3,4].map(i => `<i class="${i<n?'on':''}"></i>`).join('') + '</span>';
+  document.getElementById('langlist').innerHTML =
+    D.langs.map(([name,n]) => `<div class="langline"><span>${name}</span>${dots(n)}</div>`).join('');
+
+  const entry = e => `<div class="entry"><span class="yr">${e.yr}</span><h3>${e.h}</h3>${e.org?`<div class="org">${e.org}</div>`:''}<p>${e.p}</p></div>`;
+  document.getElementById('exp').innerHTML  = `<p class="note">${D.note}</p>` + D.exp.map(entry).join('');
+  document.getElementById('edu').innerHTML  = D.edu.map(entry).join('');
+  document.getElementById('proj').innerHTML = D.proj.map(entry).join('');
+</script>
+</body>
+</html>
