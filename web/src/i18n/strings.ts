@@ -79,10 +79,10 @@ export const STRINGS: Record<Lang, LangStrings> = {
     personal: {
       title: ['Even ', 'voorstellen'],
       lead: 'Een klein prikbord met de dingen waar ik blij van word.',
-      caps: { me: 'dit ben ik :)', weekend: 'weekend vibes', setup: 'mijn setup', coffee: 'koffie ☕', creative: 'even creatief', friends: 'met vriendinnen' },
-      notes: { music: 'altijd muziek aan terwijl ik code 🎧', todo: 'to-do: vaker naar buiten 🌿', quote: '“maak het simpel, maar bijzonder.”' },
+      caps: { me: 'dit ben ik :)', weekend: 'maak kennis met mijn konijnen', setup: 'mijn setup', coffee: 'dit ben ik nog een keer :)', creative: 'mijn gezin', friends: 'met vriendinnen' },
+      notes: { music: 'altijd muziek aan terwijl ik code 🎧', todo: 'to-do: alle konijnen aaien die ik tegenkom', quote: '“maak het simpel, maar bijzonder.”' },
       facts: ['koffieliefhebber', 'gamen', 'fotografie', 'muziek 24/7', 'tekenen', 'reizen'],
-      note: '↳ voorbeeldtekst & foto’s — sleep je eigen foto’s op het bord',
+      note: '',
     },
     skills: {
       title: ['Mijn ', 'stack'], lead: 'De talen en frameworks waar ik dagelijks mee werk.',
@@ -156,10 +156,10 @@ export const STRINGS: Record<Lang, LangStrings> = {
     personal: {
       title: ['A little ', 'about me'],
       lead: 'A little mood board of things that make me happy.',
-      caps: { me: 'this is me :)', weekend: 'weekend vibes', setup: 'my setup', coffee: 'coffee ☕', creative: 'getting creative', friends: 'with friends' },
-      notes: { music: 'always music on while I code 🎧', todo: 'to-do: get outside more 🌿', quote: '“keep it simple, but special.”' },
+      caps: { me: 'this is me :)', weekend: 'meet the rabbits', setup: 'my setup', coffee: 'this is me again :)', creative: 'my family', friends: 'with friends' },
+      notes: { music: 'always music on while I code 🎧', todo: 'to-do: pet all the bunnies I meet', quote: '“keep it simple, but special.”' },
       facts: ['coffee lover', 'gaming', 'photography', 'music 24/7', 'drawing', 'travel'],
-      note: '↳ sample text & photos — drag your own photos onto the board',
+      note: '',
     },
     skills: {
       title: ['My ', 'stack'], lead: 'The languages and frameworks I work with every day.',
