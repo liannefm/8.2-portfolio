@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import type { SectionId } from '@/types';
 import { SECTIONS, SEC, DOCK_IDS } from '@/data/sections';
 import { useLang } from '@/i18n/LangContext';
-import { STRINGS } from '@/i18n/strings';
+import { usePortfolioData } from '@/i18n/PortfolioContext';
 import { LangSwitch } from '@/components/desktop/LangSwitch';
 import { StatusBar } from './StatusBar';
 import { AppIcon } from './AppIcon';
@@ -12,6 +12,8 @@ import '@/styles/sections.css';
 
 export function PhoneShell() {
   const { lang } = useLang();
+  const portfolio = usePortfolioData();
+  const T = portfolio.strings[lang];
   const [active, setActive] = useState<SectionId | null>(null);
   const [shown, setShown] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -45,7 +47,7 @@ export function PhoneShell() {
   }, []);
 
   const sec = active ? SEC[active] : null;
-  const titles = STRINGS[lang].titles;
+  const titles = T.titles;
   const today = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : 'nl-NL', { weekday: 'short', day: '2-digit', month: 'short' });
 
   return (
@@ -61,7 +63,7 @@ export function PhoneShell() {
               <span className="home-av">L</span>
               <span className="home-hi">
                 <b>Lianne</b>
-                <span>{STRINGS[lang].role}</span>
+                <span>{T.role}</span>
               </span>
               <LangSwitch />
             </div>

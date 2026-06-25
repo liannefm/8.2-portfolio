@@ -9,4 +9,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/8.2-portfolio/api': {
+        target: 'http://localhost',
+        changeOrigin: true,
+      },
+      '/8.2-portfolio/uploads': {
+        target: 'http://localhost',
+        changeOrigin: true,
+      },
+    },
+  },
 })

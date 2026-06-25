@@ -1,12 +1,13 @@
 import type { LangStrings } from '@/i18n/strings';
 import type { Lang } from '@/types';
-import { WORK_DATES } from '@/i18n/strings';
+import type { PortfolioData } from '@/hooks/usePortfolio';
 import { Dots } from '@/components/shared/Dots';
 
 interface Props {
   T: LangStrings;
   lang: Lang;
   onToast: (msg: string) => void;
+  portfolio: PortfolioData;
 }
 
 function CvEntry({ e }: { e: { yr: string; h: string; org?: string; p?: string } }) {
@@ -20,10 +21,9 @@ function CvEntry({ e }: { e: { yr: string; h: string; org?: string; p?: string }
   );
 }
 
-export function CvSection({ T, lang, onToast }: Props) {
+export function CvSection({ T, lang, onToast, portfolio }: Props) {
   const v = T.cv;
-  const skills = ['HTML', 'CSS', 'React', 'PHP', 'SQL'];
-  const dates = WORK_DATES[lang];
+  const dates = portfolio.workDates[lang];
   const projects = T.works.items.map((it, i) => ({ ...it, date: dates[i] })).slice().reverse();
 
   return (
@@ -41,13 +41,13 @@ export function CvSection({ T, lang, onToast }: Props) {
           <div className="cvx-role">{T.role}</div>
 
           <h3 className="cvx-h">{T.titles.contact}</h3>
-          {T.contact.rows.map(([, val]) => (
-            <span className="cvx-ci" key={val}>{val}</span>
+          {portfolio.contacts.map(c => (
+            <span className="cvx-ci" key={c.platform}>{c.label}</span>
           ))}
 
           <h3 className="cvx-h">{T.titles.skills}</h3>
           <div className="cvx-pills">
-            {skills.map(s => <span className="cvx-pill" key={s}>{s}</span>)}
+            {T.skills.items.map(s => <span className="cvx-pill" key={s.name}>{s.name}</span>)}
           </div>
 
           <h3 className="cvx-h">{T.titles.languages}</h3>

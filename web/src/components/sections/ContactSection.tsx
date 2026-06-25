@@ -1,13 +1,19 @@
 import type { LangStrings } from '@/i18n/strings';
 
-const CONTACT_META = [
-  { bg: 'var(--pink)', icon: '@', href: 'mailto:lianne@example.com' },
-  { bg: 'var(--blue)', icon: 'in', href: '#' },
-  { bg: 'var(--ink)', icon: '</>', href: '#' },
-  { bg: 'var(--lime)', icon: 'ig', color: 'var(--ink)', href: '#' },
-];
+interface ApiContact {
+  platform: string;
+  url: string;
+  label: string;
+}
 
-export function ContactSection({ T }: { T: LangStrings }) {
+const PLATFORM_META: Record<string, { icon: string; bg: string; color?: string }> = {
+  email:     { icon: '@',   bg: 'var(--pink)' },
+  linkedin:  { icon: 'in',  bg: 'var(--blue)' },
+  github:    { icon: '</>', bg: 'var(--ink)' },
+  instagram: { icon: 'ig',  bg: 'var(--lime)', color: 'var(--ink)' },
+};
+
+export function ContactSection({ T, contacts }: { T: LangStrings; contacts: ApiContact[] }) {
   const c = T.contact;
   return (
     <div className="section">
@@ -15,13 +21,17 @@ export function ContactSection({ T }: { T: LangStrings }) {
       <h1 className="sec-title">{c.title[0]}<span className="hl">{c.title[1]}</span></h1>
       <p className="lead">{c.lead}</p>
       <div className="contact-list">
-        {c.rows.map(([label, val], i) => (
-          <a className="contact-row" key={label} href={CONTACT_META[i].href}
-            onClick={e => { if (CONTACT_META[i].href === '#') e.preventDefault(); }}>
-            <span className="ci" style={{ background: CONTACT_META[i].bg, color: CONTACT_META[i].color || '#fff' }}>{CONTACT_META[i].icon}</span>
-            <span className="ct"><b>{label}</b><span>{val}</span></span>
-          </a>
-        ))}
+        {contacts.map(contact => {
+          const meta = PLATFORM_META[contact.platform] || { icon: '?', bg: 'var(--muted)' };
+          return (
+            <a className="contact-row" key={contact.platform} href={contact.url}
+              target={contact.platform === 'email' ? undefined : '_blank'}
+              rel={contact.platform === 'email' ? undefined : 'noopener noreferrer'}>
+              <span className="ci" style={{ background: meta.bg, color: meta.color || '#fff' }}>{meta.icon}</span>
+              <span className="ct"><b>{contact.platform}</b><span>{contact.label}</span></span>
+            </a>
+          );
+        })}
       </div>
     </div>
   );

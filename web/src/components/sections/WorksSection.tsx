@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { LangStrings } from '@/i18n/strings';
 import type { Lang } from '@/types';
-import { WORK_DATES, WORK_TAGS, WORK_DETAIL, DETAIL_UI } from '@/i18n/strings';
+import type { PortfolioData } from '@/hooks/usePortfolio';
 
 import workOwnWebpage from '@/assets/work-own-webpage.png';
 import workWebshop from '@/assets/work-webshop.png';
@@ -17,6 +17,11 @@ const WORK_IMAGES: Record<string, string> = {
   'work-firewater.png': workFirewater,
   'work-kiosk.png': workKiosk,
   'work-rating.png': workRating,
+};
+
+const DETAIL_UI: Record<Lang, Record<string, string>> = {
+  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: 'voorbeeld — ruimte voor extra screenshots', live: 'Live bekijken', source: 'Broncode' },
+  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: 'placeholder — space for extra screenshots', live: 'View live', source: 'Source code' },
 };
 
 function workSlug(name: string) {
@@ -80,14 +85,14 @@ function WorkDetail({ p, d, ui, onBack, onToast }: WorkDetailProps) {
   );
 }
 
-export function WorksSection({ T, lang, onToast }: { T: LangStrings; lang: Lang; onToast: (msg: string) => void }) {
+export function WorksSection({ T, lang, onToast, portfolio }: { T: LangStrings; lang: Lang; onToast: (msg: string) => void; portfolio: PortfolioData }) {
   const w = T.works;
-  const dates = WORK_DATES[lang];
-  const projects = w.items.map((it, i) => ({ ...it, date: dates[i], tags: WORK_TAGS[i], idx: i }));
+  const dates = portfolio.workDates[lang];
+  const projects = w.items.map((it, i) => ({ ...it, date: dates[i], tags: portfolio.workTags[i], idx: i }));
   const [sel, setSel] = useState<number | null>(null);
 
   if (sel !== null) {
-    return <WorkDetail p={projects[sel]} d={WORK_DETAIL[lang][sel]} ui={DETAIL_UI[lang]} onBack={() => setSel(null)} onToast={onToast} />;
+    return <WorkDetail p={projects[sel]} d={portfolio.workDetail[lang][sel]} ui={DETAIL_UI[lang]} onBack={() => setSel(null)} onToast={onToast} />;
   }
 
   return (

@@ -1,6 +1,6 @@
 import type { SectionDef, SectionId } from '@/types';
 import { useLang } from '@/i18n/LangContext';
-import { STRINGS } from '@/i18n/strings';
+import { usePortfolioData } from '@/i18n/PortfolioContext';
 import { APP_META } from '@/data/sections';
 import { AppGlyph } from './AppGlyph';
 
@@ -12,7 +12,8 @@ interface Props {
 export function AppIcon({ sec, onOpen }: Props) {
   const m = APP_META[sec.id];
   const { lang } = useLang();
-  const label = STRINGS[lang].titles[sec.id];
+  const portfolio = usePortfolioData();
+  const label = portfolio.strings[lang].titles[sec.id];
 
   return (
     <button className="app" onClick={() => onOpen(sec.id)} aria-label={label}>

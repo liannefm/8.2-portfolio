@@ -1,6 +1,7 @@
 import type { LangStrings } from '@/i18n/strings';
 import type { Lang } from '@/types';
 import charImg from '@/assets/lianne-char3.png';
+import mePhoto from '@/assets/ik.png';
 
 export function AboutSection({ T, lang }: { T: LangStrings; lang: Lang }) {
   const a = T.about;
@@ -28,7 +29,7 @@ export function AboutSection({ T, lang }: { T: LangStrings; lang: Lang }) {
         <div className="polaroid">
           <span className="tape" />
           <div className="photo-mini">
-            <span className="ph-label">jouw foto</span>
+            <img src={mePhoto} alt="Lianne" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <span className="cap">Lianne</span>
         </div>
