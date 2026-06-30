@@ -6,7 +6,6 @@ export function ExperienceSection({ T }: { T: LangStrings }) {
     <div className="section">
       <p className="eyebrow">C:\LIANNE\experience</p>
       <h1 className="sec-title">{e.title[0]}<span className="hl">{e.title[1]}</span></h1>
-      <p className="lead" style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5 }}>{e.note}</p>
       <div className="timeline">
         {e.items.map((it, i) => (
           <div className="tl-item" key={i}>

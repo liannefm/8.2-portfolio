@@ -20,8 +20,8 @@ const WORK_IMAGES: Record<string, string> = {
 };
 
 const DETAIL_UI: Record<Lang, Record<string, string>> = {
-  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: 'voorbeeld — ruimte voor extra screenshots', live: 'Live bekijken', source: 'Broncode' },
-  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: 'placeholder — space for extra screenshots', live: 'View live', source: 'Source code' },
+  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: '', live: 'Live bekijken', source: 'Broncode' },
+  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: '', live: 'View live', source: 'Source code' },
 };
 
 function workSlug(name: string) {

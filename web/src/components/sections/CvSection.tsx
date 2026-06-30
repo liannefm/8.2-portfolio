@@ -71,7 +71,6 @@ export function CvSection({ T, lang, onToast, portfolio }: Props) {
         </main>
       </div>
 
-      <p className="cv-note">{v.note}</p>
     </div>
   );
 }

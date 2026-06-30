@@ -1,6 +1,9 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/config.php';
+
+requireAuth();
 
 try {
     $db = getDb();
@@ -122,6 +125,12 @@ try {
             $stmt->execute([$pid, $type, $key, $_POST['caption_nl'] ?? '', $_POST['caption_en'] ?? '', $imgUrl, $order]);
             echo json_encode(['ok' => true, 'id' => $db->lastInsertId()]);
             break;
+        case 'update_mood_position':
+            $stmt = $db->prepare("UPDATE mood_items SET pos_x=?, pos_y=? WHERE id=? AND profile_id=?");
+            $stmt->execute([(float)$_POST['pos_x'], (float)$_POST['pos_y'], $_POST['id'], $pid]);
+            echo json_encode(['ok' => true]);
+            break;
+
         case 'update_mood':
             $stmt = $db->prepare("UPDATE mood_items SET caption_nl=?, caption_en=? WHERE id=? AND profile_id=?");
             $stmt->execute([$_POST['caption_nl'], $_POST['caption_en'], $_POST['id'], $pid]);

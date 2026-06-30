@@ -13,7 +13,7 @@ interface Props {
   onToast: (msg: string) => void;
 }
 
-export function Taskbar({ windows, focusedId, startOpen, onStart, onFocus, onToast }: Props) {
+export function Taskbar({ windows, focusedId, startOpen, onStart, onFocus }: Props) {
   const [time, setTime] = useState(() => new Date());
   useEffect(() => {
     const t = setInterval(() => setTime(new Date()), 30_000);
@@ -43,10 +43,10 @@ export function Taskbar({ windows, focusedId, startOpen, onStart, onFocus, onToa
 
       <div className="tray">
         <LangSwitch />
-        <a href="#" onClick={e => { e.preventDefault(); onToast('LinkedIn — voorbeeld'); }} title="LinkedIn">in</a>
-        <a href="#" onClick={e => { e.preventDefault(); onToast('GitHub — voorbeeld'); }} title="GitHub" style={{ background: 'var(--cream)' }}>{'</>'}</a>
-        <a href="#" onClick={e => { e.preventDefault(); onToast('Behance — voorbeeld'); }} title="Behance" style={{ background: 'var(--blue)', color: '#fff' }}>Be</a>
-        <a href="#" onClick={e => { e.preventDefault(); onToast('Instagram — voorbeeld'); }} title="Instagram" style={{ background: 'var(--pink)', color: '#fff' }}>ig</a>
+        <a href="https://linkedin.com/in/lianne-dev" target="_blank" rel="noopener noreferrer" title="LinkedIn">in</a>
+        <a href="https://github.com/lianne-dev" target="_blank" rel="noopener noreferrer" title="GitHub" style={{ background: 'var(--cream)' }}>{'</>'}</a>
+        <a href="mailto:lianne@example.com" title="Email" style={{ background: 'var(--blue)', color: '#fff' }}>@</a>
+        <a href="https://instagram.com/lianne.codes" target="_blank" rel="noopener noreferrer" title="Instagram" style={{ background: 'var(--pink)', color: '#fff' }}>ig</a>
         <span className="clock">{hh}:{mm}<small>{date}</small></span>
       </div>
     </div>

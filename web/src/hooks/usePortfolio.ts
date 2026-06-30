@@ -81,6 +81,8 @@ interface ApiMoodItem {
   caption_nl: string | null;
   caption_en: string | null;
   image_url: string | null;
+  pos_x: number | null;
+  pos_y: number | null;
 }
 
 interface ApiFact {
@@ -188,7 +190,6 @@ function buildStrings(data: ApiData, lang: Lang): LangStrings {
     },
     education: {
       title: l === 'en' ? ['My ', 'education'] : ['Mijn ', 'opleiding'],
-      note: l === 'en' ? '↳ sample data — fill in your own education' : '↳ voorbeelddata — vul je eigen opleiding in',
       items: data.education.map(e => ({
         yr: yearRange(e.year_start, e.year_end, l),
         h: l === 'nl' ? e.degree_nl : e.degree_en,
@@ -198,7 +199,6 @@ function buildStrings(data: ApiData, lang: Lang): LangStrings {
     },
     experience: {
       title: l === 'en' ? ['Work ', 'experience'] : ['Werk', 'ervaring'],
-      note: l === 'en' ? '↳ sample data — fill in your own experience' : '↳ voorbeelddata — vul je eigen ervaring in',
       items: data.experience.map(e => ({
         yr: yearRange(e.year_start, e.year_end, l),
         h: l === 'nl' ? e.position_nl : e.position_en,
@@ -231,7 +231,6 @@ function buildStrings(data: ApiData, lang: Lang): LangStrings {
       title: l === 'en' ? ['My ', 'CV'] : ['Mijn ', 'CV'],
       open: l === 'en' ? 'Open in browser' : 'Open in browser',
       download: l === 'en' ? 'Download PDF' : 'Download PDF',
-      note: l === 'en' ? 'Sample CV — replace the details with your own info.' : 'Voorbeeld-CV — pas de gegevens aan naar je eigen info.',
       openToast: l === 'en' ? 'Opening resume in a new tab ✦' : 'Resume openen in nieuw tabblad ✦',
       dlToast: l === 'en' ? 'Link your own PDF file here ✦' : 'Koppel hier je eigen PDF-bestand ✦',
     },

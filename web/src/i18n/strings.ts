@@ -32,12 +32,10 @@ export interface LangStrings {
   };
   education: {
     title: [string, string];
-    note: string;
     items: Array<{ yr: string; h: string; org: string; p: string }>;
   };
   experience: {
     title: [string, string];
-    note: string;
     items: Array<{ yr: string; h: string; org: string; p: string }>;
   };
   languages: {
@@ -55,7 +53,6 @@ export interface LangStrings {
     title: [string, string];
     open: string;
     download: string;
-    note: string;
     openToast: string;
     dlToast: string;
   };
@@ -107,17 +104,16 @@ export const STRINGS: Record<Lang, LangStrings> = {
       ],
     },
     education: {
-      title: ['Mijn ', 'opleiding'], note: '↳ voorbeelddata — vul je eigen opleiding in',
+      title: ['Mijn ', 'opleiding'],
       items: [
         { yr: '2024 — 2028', h: 'Creative Software Developer', org: 'Grafisch Lyceum Utrecht', p: '' },
         { yr: '2019 — 2024', h: 'VMBO-TL', org: 'Revius Lyceum Wijk bij Duurstede', p: '' },
       ],
     },
     experience: {
-      title: ['Werk', 'ervaring'], note: '↳ voorbeelddata — vul je eigen ervaring in',
+      title: ['Werk', 'ervaring'],
       items: [
-        { yr: '2024 — heden', h: 'Front-end Developer', org: 'Bedrijfsnaam (voorbeeld)', p: 'Bouwen en onderhouden van responsive web-interfaces in React. Samenwerken met design en backend.' },
-        { yr: '2023 — 2024', h: 'Stage Front-end Developer', org: 'Bedrijfsnaam (voorbeeld)', p: 'Meegebouwd aan klantprojecten met HTML, CSS en PHP. Eerste ervaring met databases (SQL).' },
+        { yr: '2024 — heden', h: 'Front-end Developer', org: 'Het BUREAU', p: 'Bouwen en onderhouden van responsive web-interfaces in React. Samenwerken met design en backend.' },
       ],
     },
     languages: {
@@ -129,12 +125,11 @@ export const STRINGS: Record<Lang, LangStrings> = {
       note: 'Ik schakel moeiteloos tussen beide talen — in overleg, in code en in documentatie.',
     },
     contact: {
-      title: ["Let's ", 'connect'], lead: 'Zin om samen te werken? Stuur gerust een bericht. (Voorbeeldgegevens — pas aan naar je echte info.)',
+      title: ["Let's ", 'connect'], lead: 'Zin om samen te werken? Stuur gerust een bericht.',
       rows: [['Email', 'lianne@example.com'], ['LinkedIn', 'linkedin.com/in/lianne-dev'], ['GitHub', 'github.com/lianne-dev'], ['Instagram', '@lianne.codes']],
     },
     cv: {
       title: ['Mijn ', 'CV'], open: 'Open in browser', download: 'Download PDF',
-      note: 'Voorbeeld-CV — pas de gegevens aan naar je eigen info.',
       openToast: 'Resume openen in nieuw tabblad ✦', dlToast: 'Koppel hier je eigen PDF-bestand ✦',
     },
   },
@@ -184,17 +179,16 @@ export const STRINGS: Record<Lang, LangStrings> = {
       ],
     },
     education: {
-      title: ['My ', 'education'], note: '↳ sample data — fill in your own education',
+      title: ['My ', 'education'],
       items: [
         { yr: '2024 — 2028', h: 'Creative Software Developer', org: 'Grafisch Lyceum Utrecht', p: '' },
         { yr: '2019 — 2024', h: 'VMBO-TL', org: 'Revius Lyceum Wijk bij Duurstede', p: '' },
       ],
     },
     experience: {
-      title: ['Work ', 'experience'], note: '↳ sample data — fill in your own experience',
+      title: ['Work ', 'experience'],
       items: [
-        { yr: '2024 — now', h: 'Front-end Developer', org: 'Company name (sample)', p: 'Building and maintaining responsive web interfaces in React. Working closely with design and backend.' },
-        { yr: '2023 — 2024', h: 'Front-end Developer Intern', org: 'Company name (sample)', p: 'Helped build client projects with HTML, CSS and PHP. First experience with databases (SQL).' },
+        { yr: '2024 — now', h: 'Front-end Developer', org: 'Het BUREAU', p: 'Building and maintaining responsive web interfaces in React. Working closely with design and backend.' },
       ],
     },
     languages: {
@@ -206,12 +200,11 @@ export const STRINGS: Record<Lang, LangStrings> = {
       note: 'I switch effortlessly between both — in meetings, in code and in documentation.',
     },
     contact: {
-      title: ["Let's ", 'connect'], lead: "Want to work together? Feel free to drop a message. (Sample details — replace with your real info.)",
+      title: ["Let's ", 'connect'], lead: "Want to work together? Feel free to drop a message.",
       rows: [['Email', 'lianne@example.com'], ['LinkedIn', 'linkedin.com/in/lianne-dev'], ['GitHub', 'github.com/lianne-dev'], ['Instagram', '@lianne.codes']],
     },
     cv: {
       title: ['My ', 'CV'], open: 'Open in browser', download: 'Download PDF',
-      note: 'Sample CV — replace the details with your own info.',
       openToast: 'Opening resume in a new tab ✦', dlToast: 'Link your own PDF file here ✦',
     },
   },
@@ -232,8 +225,8 @@ export const WORK_TAGS = [
 ];
 
 export const DETAIL_UI: Record<Lang, Record<string, string>> = {
-  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: 'voorbeeld — ruimte voor extra screenshots', live: 'Live bekijken', source: 'Broncode' },
-  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: 'placeholder — space for extra screenshots', live: 'View live', source: 'Source code' },
+  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: '', live: 'Live bekijken', source: 'Broncode' },
+  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: '', live: 'View live', source: 'Source code' },
 };
 
 export interface WorkDetailData {

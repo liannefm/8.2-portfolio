@@ -25,7 +25,7 @@ const STRINGS = {
       caps:{ me:'dit ben ik :)', weekend:'weekend vibes', setup:'mijn setup', coffee:'koffie \u2615', creative:'even creatief', friends:'met vriendinnen' },
       notes:{ music:'altijd muziek aan terwijl ik code \uD83C\uDFA7', todo:'to-do: vaker naar buiten \uD83C\uDF3F', quote:'\u201Cmaak het simpel, maar bijzonder.\u201D' },
       facts:['koffieliefhebber','gamen','fotografie','muziek 24/7','tekenen','reizen'],
-      note:'\u21B3 voorbeeldtekst & foto\u2019s — sleep je eigen foto\u2019s op het bord',
+      note:'',
     },
     skills: { title:['Mijn ', 'stack'], lead:'De talen en frameworks waar ik dagelijks mee werk.',
       items:[
@@ -48,17 +48,17 @@ const STRINGS = {
       ],
     },
     education: {
-      title:['Mijn ', 'opleiding'], note:'↳ voorbeelddata — vul je eigen opleiding in',
+      title:['Mijn ', 'opleiding'], 
       items:[
         { yr:'2024 — 2028', h:'Creative Software Developer', org:'Grafisch Lyceum Utrecht', p:'' },
         { yr:'2019 — 2024', h:'VMBO-TL', org:'Revius Lyceum Wijk bij Duurstede', p:'' },
       ],
     },
     experience: {
-      title:['Werk', 'ervaring'], note:'↳ voorbeelddata — vul je eigen ervaring in',
+      title:['Werk', 'ervaring'], 
       items:[
-        { yr:'2024 — heden', h:'Front-end Developer', org:'Bedrijfsnaam (voorbeeld)', p:'Bouwen en onderhouden van responsive web-interfaces in React. Samenwerken met design en backend.' },
-        { yr:'2023 — 2024', h:'Stage Front-end Developer', org:'Bedrijfsnaam (voorbeeld)', p:'Meegebouwd aan klantprojecten met HTML, CSS en PHP. Eerste ervaring met databases (SQL).' },
+        { yr:'2024 — heden', h:'Front-end Developer', org:'Het BUREAU', p:'Bouwen en onderhouden van responsive web-interfaces in React. Samenwerken met design en backend.' },
+        { yr:'2023 — 2024', h:'Stage Front-end Developer', org:'Het BUREAU', p:'Meegebouwd aan klantprojecten met HTML, CSS en PHP. Eerste ervaring met databases (SQL).' },
       ],
     },
     languages: {
@@ -70,12 +70,12 @@ const STRINGS = {
       note:'Ik schakel moeiteloos tussen beide talen — in overleg, in code en in documentatie.',
     },
     contact: {
-      title:["Let's ", 'connect'], lead:'Zin om samen te werken? Stuur gerust een bericht. (Voorbeeldgegevens — pas aan naar je echte info.)',
+      title:["Let's ", 'connect'], lead:'Zin om samen te werken? Stuur gerust een bericht. ',
       rows:[ ['Email','lianne@example.com'], ['LinkedIn','linkedin.com/in/lianne-dev'], ['GitHub','github.com/lianne-dev'], ['Instagram','@lianne.codes'] ],
     },
     cv: {
       title:['Mijn ', 'CV'], open:'Open in browser', download:'Download PDF',
-      note:'Voorbeeld-CV — pas de gegevens aan naar je eigen info.',
+      
       openToast:'Resume openen in nieuw tabblad ✦', dlToast:'Koppel hier je eigen PDF-bestand ✦',
     },
   },
@@ -100,7 +100,7 @@ const STRINGS = {
       caps:{ me:'this is me :)', weekend:'weekend vibes', setup:'my setup', coffee:'coffee \u2615', creative:'getting creative', friends:'with friends' },
       notes:{ music:'always music on while I code \uD83C\uDFA7', todo:'to-do: get outside more \uD83C\uDF3F', quote:'\u201Ckeep it simple, but special.\u201D' },
       facts:['coffee lover','gaming','photography','music 24/7','drawing','travel'],
-      note:'\u21B3 sample text & photos — drag your own photos onto the board',
+      note:'',
     },
     skills: { title:['My ', 'stack'], lead:'The languages and frameworks I work with every day.',
       items:[
@@ -123,17 +123,17 @@ const STRINGS = {
       ],
     },
     education: {
-      title:['My ', 'education'], note:'↳ sample data — fill in your own education',
+      title:['My ', 'education'],
       items:[
         { yr:'2024 — 2028', h:'Creative Software Developer', org:'Grafisch Lyceum Utrecht', p:'' },
         { yr:'2019 — 2024', h:'VMBO-TL', org:'Revius Lyceum Wijk bij Duurstede', p:'' },
       ],
     },
     experience: {
-      title:['Work ', 'experience'], note:'↳ sample data — fill in your own experience',
+      title:['Work ', 'experience'],
       items:[
-        { yr:'2024 — now', h:'Front-end Developer', org:'Company name (sample)', p:'Building and maintaining responsive web interfaces in React. Working closely with design and backend.' },
-        { yr:'2023 — 2024', h:'Front-end Developer Intern', org:'Company name (sample)', p:'Helped build client projects with HTML, CSS and PHP. First experience with databases (SQL).' },
+        { yr:'2024 — now', h:'Front-end Developer', org:'Het BUREAU', p:'Building and maintaining responsive web interfaces in React. Working closely with design and backend.' },
+        { yr:'2023 — 2024', h:'Front-end Developer Intern', org:'Het BUREAU', p:'Helped build client projects with HTML, CSS and PHP. First experience with databases (SQL).' },
       ],
     },
     languages: {
@@ -145,12 +145,11 @@ const STRINGS = {
       note:'I switch effortlessly between both — in meetings, in code and in documentation.',
     },
     contact: {
-      title:["Let's ", 'connect'], lead:"Want to work together? Feel free to drop a message. (Sample details — replace with your real info.)",
+      title:["Let's ", 'connect'], lead:"Want to work together? Feel free to drop a message. ",
       rows:[ ['Email','lianne@example.com'], ['LinkedIn','linkedin.com/in/lianne-dev'], ['GitHub','github.com/lianne-dev'], ['Instagram','@lianne.codes'] ],
     },
     cv: {
       title:['My ', 'CV'], open:'Open in browser', download:'Download PDF',
-      note:'Sample CV — replace the details with your own info.',
       openToast:'Opening resume in a new tab ✦', dlToast:'Link your own PDF file here ✦',
     },
   },
