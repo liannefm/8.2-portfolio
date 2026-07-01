@@ -87,7 +87,7 @@ export function Window({ win, focused, isMobile, onFocus, onClose, onMin, onMove
         ))}
       </div>
 
-      <div className="win-body">
+      <div className="win-body" style={{ '--sec-acc': sec.acc } as React.CSSProperties}>
         <SectionBody id={win.section} onToast={onToast} />
       </div>
 

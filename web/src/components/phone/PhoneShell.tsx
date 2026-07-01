@@ -85,7 +85,7 @@ export function PhoneShell() {
           </div>
 
           {active && sec && (
-            <div className={'phone-app' + (shown ? ' show' : '')} style={{ '--accent': sec.acc } as React.CSSProperties}>
+            <div className={'phone-app' + (shown ? ' show' : '')} style={{ '--accent': sec.acc, '--sec-acc': sec.acc } as React.CSSProperties}>
               <div className="app-head">
                 <StatusBar />
                 <div className="app-nav">
