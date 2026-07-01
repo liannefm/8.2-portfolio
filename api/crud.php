@@ -169,8 +169,8 @@ try {
         // ── PROJECTS ──
         case 'create_project':
             $order = $db->query("SELECT COALESCE(MAX(sort_order),0)+1 FROM projects WHERE profile_id=$pid")->fetchColumn();
-            $stmt = $db->prepare("INSERT INTO projects (profile_id,title_nl,title_en,description_nl,description_en,date_nl,date_en,role_nl,role_en,type_nl,type_en,duration,intro_nl,intro_en,outcome_nl,outcome_en,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            $stmt->execute([$pid, $_POST['title_nl'], $_POST['title_en'], $_POST['description_nl'], $_POST['description_en'], $_POST['date_nl'] ?? '', $_POST['date_en'] ?? '', $_POST['role_nl'] ?? '', $_POST['role_en'] ?? '', $_POST['type_nl'] ?? '', $_POST['type_en'] ?? '', $_POST['duration'] ?? '', $_POST['intro_nl'] ?? '', $_POST['intro_en'] ?? '', $_POST['outcome_nl'] ?? '', $_POST['outcome_en'] ?? '', $order]);
+            $stmt = $db->prepare("INSERT INTO projects (profile_id,title_nl,title_en,description_nl,description_en,date_nl,date_en,role_nl,role_en,type_nl,type_en,duration,intro_nl,intro_en,outcome_nl,outcome_en,live_url,source_url,video_url,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt->execute([$pid, $_POST['title_nl'], $_POST['title_en'], $_POST['description_nl'], $_POST['description_en'], $_POST['date_nl'] ?? '', $_POST['date_en'] ?? '', $_POST['role_nl'] ?? '', $_POST['role_en'] ?? '', $_POST['type_nl'] ?? '', $_POST['type_en'] ?? '', $_POST['duration'] ?? '', $_POST['intro_nl'] ?? '', $_POST['intro_en'] ?? '', $_POST['outcome_nl'] ?? '', $_POST['outcome_en'] ?? '', $_POST['live_url'] ?: null, $_POST['source_url'] ?: null, $_POST['video_url'] ?: null, $order]);
             $projId = $db->lastInsertId();
             if (!empty($_FILES['thumbnail']['name'])) {
                 $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
@@ -192,8 +192,8 @@ try {
 
         case 'update_project':
             $id = $_POST['id'];
-            $stmt = $db->prepare("UPDATE projects SET title_nl=?,title_en=?,description_nl=?,description_en=?,date_nl=?,date_en=?,role_nl=?,role_en=?,type_nl=?,type_en=?,duration=?,intro_nl=?,intro_en=?,outcome_nl=?,outcome_en=? WHERE id=? AND profile_id=?");
-            $stmt->execute([$_POST['title_nl'], $_POST['title_en'], $_POST['description_nl'], $_POST['description_en'], $_POST['date_nl'] ?? '', $_POST['date_en'] ?? '', $_POST['role_nl'] ?? '', $_POST['role_en'] ?? '', $_POST['type_nl'] ?? '', $_POST['type_en'] ?? '', $_POST['duration'] ?? '', $_POST['intro_nl'] ?? '', $_POST['intro_en'] ?? '', $_POST['outcome_nl'] ?? '', $_POST['outcome_en'] ?? '', $id, $pid]);
+            $stmt = $db->prepare("UPDATE projects SET title_nl=?,title_en=?,description_nl=?,description_en=?,date_nl=?,date_en=?,role_nl=?,role_en=?,type_nl=?,type_en=?,duration=?,intro_nl=?,intro_en=?,outcome_nl=?,outcome_en=?,live_url=?,source_url=?,video_url=? WHERE id=? AND profile_id=?");
+            $stmt->execute([$_POST['title_nl'], $_POST['title_en'], $_POST['description_nl'], $_POST['description_en'], $_POST['date_nl'] ?? '', $_POST['date_en'] ?? '', $_POST['role_nl'] ?? '', $_POST['role_en'] ?? '', $_POST['type_nl'] ?? '', $_POST['type_en'] ?? '', $_POST['duration'] ?? '', $_POST['intro_nl'] ?? '', $_POST['intro_en'] ?? '', $_POST['outcome_nl'] ?? '', $_POST['outcome_en'] ?? '', $_POST['live_url'] ?: null, $_POST['source_url'] ?: null, $_POST['video_url'] ?: null, $id, $pid]);
             if (!empty($_FILES['thumbnail']['name'])) {
                 $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
                 $fname = 'work-' . $id . '.' . $ext;
@@ -216,6 +216,47 @@ try {
 
         case 'delete_project':
             $db->prepare("DELETE FROM projects WHERE id=? AND profile_id=?")->execute([$_POST['id'], $pid]);
+            echo json_encode(['ok' => true]);
+            break;
+
+        // ── PROJECT MEDIA (foto's en code-screenshots) ──
+        case 'create_project_media':
+            $projectId = (int)$_POST['project_id'];
+            // controleer dat het project van dit profiel is
+            $owner = $db->prepare("SELECT id FROM projects WHERE id=? AND profile_id=?");
+            $owner->execute([$projectId, $pid]);
+            if (!$owner->fetchColumn()) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Project niet gevonden']);
+                break;
+            }
+            if (empty($_FILES['image']['name'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Geen afbeelding geüpload']);
+                break;
+            }
+            $kind = ($_POST['kind'] ?? 'photo') === 'code' ? 'code' : 'photo';
+            $order = $db->query("SELECT COALESCE(MAX(sort_order),0)+1 FROM project_media WHERE project_id=$projectId")->fetchColumn();
+            $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $fname = 'media-' . $projectId . '-' . uniqid() . '.' . $ext;
+            move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../uploads/projects/' . $fname);
+            $stmt = $db->prepare("INSERT INTO project_media (project_id,kind,image_url,caption_nl,caption_en,sort_order) VALUES (?,?,?,?,?,?)");
+            $stmt->execute([$projectId, $kind, $fname, $_POST['caption_nl'] ?? '', $_POST['caption_en'] ?? '', $order]);
+            echo json_encode(['ok' => true, 'id' => $db->lastInsertId()]);
+            break;
+
+        case 'update_project_media':
+            $stmt = $db->prepare("UPDATE project_media m JOIN projects p ON p.id = m.project_id SET m.caption_nl=?, m.caption_en=? WHERE m.id=? AND p.profile_id=?");
+            $stmt->execute([$_POST['caption_nl'] ?? '', $_POST['caption_en'] ?? '', $_POST['id'], $pid]);
+            echo json_encode(['ok' => true]);
+            break;
+
+        case 'delete_project_media':
+            $row = $db->prepare("SELECT m.image_url FROM project_media m JOIN projects p ON p.id = m.project_id WHERE m.id=? AND p.profile_id=?");
+            $row->execute([$_POST['id'], $pid]);
+            $file = $row->fetchColumn();
+            $db->prepare("DELETE m FROM project_media m JOIN projects p ON p.id = m.project_id WHERE m.id=? AND p.profile_id=?")->execute([$_POST['id'], $pid]);
+            if ($file) { @unlink(__DIR__ . '/../uploads/projects/' . $file); }
             echo json_encode(['ok' => true]);
             break;
 

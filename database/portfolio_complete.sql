@@ -121,6 +121,9 @@ CREATE TABLE `projects` (
   `intro_en` text DEFAULT NULL,
   `outcome_nl` varchar(255) DEFAULT NULL,
   `outcome_en` varchar(255) DEFAULT NULL,
+  `live_url` varchar(255) DEFAULT NULL,
+  `source_url` varchar(255) DEFAULT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
   `sort_order` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_projects_profile` (`profile_id`),
@@ -148,6 +151,20 @@ CREATE TABLE `project_highlights` (
   PRIMARY KEY (`id`),
   KEY `fk_highlights_project` (`project_id`),
   CONSTRAINT `fk_highlights_project` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Media per project: foto's (kind='photo') en code-screenshots (kind='code')
+CREATE TABLE `project_media` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `kind` enum('photo','code') NOT NULL DEFAULT 'photo',
+  `image_url` varchar(255) NOT NULL,
+  `caption_nl` varchar(255) DEFAULT NULL,
+  `caption_en` varchar(255) DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `fk_media_project` (`project_id`),
+  CONSTRAINT `fk_media_project` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Moodboard items (foto's en notities)
@@ -285,6 +302,9 @@ INSERT INTO `projects` (`id`, `profile_id`, `title_nl`, `title_en`, `description
  'An app that lets users rate students. Scores and feedback are stored and reported back clearly. Built with Vue and Nuxt.',
  'Inzicht in feedback, in één overzichtelijke app.',
  'Insight into feedback, in one clear app.', 6);
+
+-- Voorbeeld-link naar GitHub (pas per project aan in de admin)
+UPDATE `projects` SET `source_url` = 'https://github.com/lianne-dev' WHERE `profile_id` = 1;
 
 -- Project tags
 INSERT INTO `project_tags` (`project_id`, `tag`, `sort_order`) VALUES

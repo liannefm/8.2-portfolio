@@ -32,6 +32,7 @@ try {
         $pid = $project['id'];
         $project['tags'] = $db->query("SELECT tag FROM project_tags WHERE project_id = $pid ORDER BY sort_order")->fetchAll(PDO::FETCH_COLUMN);
         $project['highlights'] = $db->query("SELECT text_nl, text_en FROM project_highlights WHERE project_id = $pid ORDER BY sort_order")->fetchAll();
+        $project['media'] = $db->query("SELECT kind, image_url, caption_nl, caption_en FROM project_media WHERE project_id = $pid ORDER BY sort_order")->fetchAll();
     }
     unset($project);
 

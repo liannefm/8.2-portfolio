@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { LangStrings } from '@/i18n/strings';
 import type { Lang } from '@/types';
-import type { PortfolioData } from '@/hooks/usePortfolio';
+import type { PortfolioData, MediaItem, WorkLinks } from '@/hooks/usePortfolio';
 
 import workOwnWebpage from '@/assets/work-own-webpage.png';
 import workWebshop from '@/assets/work-webshop.png';
@@ -20,9 +20,19 @@ const WORK_IMAGES: Record<string, string> = {
 };
 
 const DETAIL_UI: Record<Lang, Record<string, string>> = {
-  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: 'Meer beelden', galleryNote: '', live: 'Live bekijken', source: 'Broncode' },
-  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'More visuals', galleryNote: '', live: 'View live', source: 'Source code' },
+  nl: { back: 'terug naar projecten', role: 'Rol', type: 'Type', dur: 'Duur', date: 'Datum', done: 'Wat ik deed', stack: 'Gebruikte technieken', gallery: "Foto's", code: 'Code uitgelicht', video: 'Video', galleryNote: '', live: 'Live bekijken', source: 'GitHub' },
+  en: { back: 'back to projects', role: 'Role', type: 'Type', dur: 'Duration', date: 'Date', done: 'What I did', stack: 'Tech used', gallery: 'Photos', code: 'Code highlights', video: 'Video', galleryNote: '', live: 'View live', source: 'GitHub' },
 };
+
+const VIDEO_EXT = /\.(mp4|webm|ogg|mov)$/i;
+
+function videoEmbed(url: string): string | null {
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]+)/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return null;
+}
 
 function workSlug(name: string) {
   return name.toLowerCase().replace(/&/g, 'en').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -31,13 +41,17 @@ function workSlug(name: string) {
 interface WorkDetailProps {
   p: { name: string; img: string; date: string; tags: string[] };
   d: { role: string; type: string; dur: string; intro: string; bullets: string[]; outcome: string };
+  media: { photos: MediaItem[]; code: MediaItem[] };
+  links: WorkLinks;
   ui: Record<string, string>;
   onBack: () => void;
-  onToast: (msg: string) => void;
 }
 
-function WorkDetail({ p, d, ui, onBack, onToast }: WorkDetailProps) {
+function WorkDetail({ p, d, media, links, ui, onBack }: WorkDetailProps) {
   const imgSrc = WORK_IMAGES[p.img];
+  const embed = links.video ? videoEmbed(links.video) : null;
+  const isVideoFile = links.video && !embed && VIDEO_EXT.test(links.video);
+
   return (
     <div className="section work-detail" style={{ maxWidth: 820 }}>
       <button className="wd-back" onClick={onBack}><span aria-hidden="true">&larr;</span> {ui.back}</button>
@@ -71,28 +85,76 @@ function WorkDetail({ p, d, ui, onBack, onToast }: WorkDetailProps) {
         </div>
       </div>
 
-      <h3 className="wd-gh">{ui.gallery}</h3>
-      <div className="wd-gallery">
-        <span className="wd-thumb"><i>{ui.galleryNote}</i></span>
-        <span className="wd-thumb"><i>{ui.galleryNote}</i></span>
-      </div>
+      {(embed || isVideoFile) && (
+        <>
+          <h3 className="wd-gh">{ui.video}</h3>
+          <div className="wd-video">
+            {embed
+              ? <iframe src={embed} title={`${p.name} — video`} allow="accelerated-motion; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+              : <video src={links.video} controls preload="metadata" />}
+          </div>
+        </>
+      )}
 
-      <div className="wd-cta">
-        <button className="btn-primary" onClick={() => onToast('Live demo ✦')}>{ui.live} &rarr;</button>
-        <button className="proj-btn" onClick={() => onToast('Broncode ✦')}>{ui.source}</button>
-      </div>
+      {media.photos.length > 0 && (
+        <>
+          <h3 className="wd-gh">{ui.gallery}</h3>
+          <div className="wd-gallery">
+            {media.photos.map((m, i) => (
+              <figure className="wd-shot" key={i}>
+                <img src={m.img} alt={m.cap || p.name} loading="lazy" />
+                {m.cap && <figcaption>{m.cap}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        </>
+      )}
+
+      {media.code.length > 0 && (
+        <>
+          <h3 className="wd-gh">{ui.code}</h3>
+          <div className="wd-code-list">
+            {media.code.map((m, i) => (
+              <figure className="wd-code" key={i}>
+                <img src={m.img} alt={m.cap || 'code'} loading="lazy" />
+                {m.cap && <figcaption>{m.cap}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        </>
+      )}
+
+      {(links.live || links.source) && (
+        <div className="wd-cta">
+          {links.live && (
+            <a className="btn-primary" href={links.live} target="_blank" rel="noreferrer noopener">{ui.live} &rarr;</a>
+          )}
+          {links.source && (
+            <a className="proj-btn" href={links.source} target="_blank" rel="noreferrer noopener">{ui.source}</a>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
-export function WorksSection({ T, lang, onToast, portfolio }: { T: LangStrings; lang: Lang; onToast: (msg: string) => void; portfolio: PortfolioData }) {
+export function WorksSection({ T, lang, portfolio }: { T: LangStrings; lang: Lang; onToast: (msg: string) => void; portfolio: PortfolioData }) {
   const w = T.works;
   const dates = portfolio.workDates[lang];
   const projects = w.items.map((it, i) => ({ ...it, date: dates[i], tags: portfolio.workTags[i], idx: i }));
   const [sel, setSel] = useState<number | null>(null);
 
   if (sel !== null) {
-    return <WorkDetail p={projects[sel]} d={portfolio.workDetail[lang][sel]} ui={DETAIL_UI[lang]} onBack={() => setSel(null)} onToast={onToast} />;
+    return (
+      <WorkDetail
+        p={projects[sel]}
+        d={portfolio.workDetail[lang][sel]}
+        media={portfolio.workMedia[lang][sel]}
+        links={portfolio.workLinks[sel]}
+        ui={DETAIL_UI[lang]}
+        onBack={() => setSel(null)}
+      />
+    );
   }
 
   return (

@@ -3,6 +3,7 @@ import type { Lang } from '@/types';
 import type { LangStrings, WorkDetailData } from '@/i18n/strings';
 
 const API_URL = 'http://localhost/8.2-portfolio/api/portfolio.php';
+const MEDIA_BASE = 'http://localhost/8.2-portfolio/uploads/projects/';
 
 interface ApiProfile {
   name: string;
@@ -54,6 +55,13 @@ interface ApiContact {
   label: string;
 }
 
+interface ApiMedia {
+  kind: 'photo' | 'code';
+  image_url: string;
+  caption_nl: string | null;
+  caption_en: string | null;
+}
+
 interface ApiProject {
   title_nl: string;
   title_en: string;
@@ -71,8 +79,12 @@ interface ApiProject {
   intro_en: string | null;
   outcome_nl: string | null;
   outcome_en: string | null;
+  live_url: string | null;
+  source_url: string | null;
+  video_url: string | null;
   tags: string[];
   highlights: Array<{ text_nl: string; text_en: string }>;
+  media: ApiMedia[];
 }
 
 interface ApiMoodItem {
@@ -101,13 +113,6 @@ interface ApiData {
   moodItems: ApiMoodItem[];
   facts: ApiFact[];
 }
-
-const PLATFORM_LABELS: Record<string, { icon: string; bg: string; color?: string }> = {
-  email:     { icon: '@',   bg: 'var(--pink)' },
-  linkedin:  { icon: 'in',  bg: 'var(--blue)' },
-  github:    { icon: '</>', bg: 'var(--ink)' },
-  instagram: { icon: 'ig',  bg: 'var(--lime)', color: 'var(--ink)' },
-};
 
 function yearRange(start: string, end: string | null, lang: Lang): string {
   const s = start;
@@ -261,11 +266,47 @@ function buildWorkDetail(data: ApiData): Record<Lang, WorkDetailData[]> {
   return { nl: build('nl'), en: build('en') };
 }
 
+export interface MediaItem {
+  img: string;
+  cap: string;
+}
+
+export interface WorkLinks {
+  live: string;
+  source: string;
+  video: string;
+}
+
+function buildWorkLinks(data: ApiData): WorkLinks[] {
+  return data.projects.map(p => ({
+    live: p.live_url || '',
+    source: p.source_url || '',
+    video: p.video_url || '',
+  }));
+}
+
+function buildWorkMedia(data: ApiData): Record<Lang, Array<{ photos: MediaItem[]; code: MediaItem[] }>> {
+  const build = (l: Lang) =>
+    data.projects.map(p => {
+      const toItem = (m: ApiMedia): MediaItem => ({
+        img: MEDIA_BASE + m.image_url,
+        cap: (l === 'nl' ? m.caption_nl : m.caption_en) || '',
+      });
+      return {
+        photos: (p.media || []).filter(m => m.kind === 'photo').map(toItem),
+        code: (p.media || []).filter(m => m.kind === 'code').map(toItem),
+      };
+    });
+  return { nl: build('nl'), en: build('en') };
+}
+
 export interface PortfolioData {
   strings: Record<Lang, LangStrings>;
   workDates: Record<Lang, string[]>;
   workTags: string[][];
   workDetail: Record<Lang, WorkDetailData[]>;
+  workLinks: WorkLinks[];
+  workMedia: Record<Lang, Array<{ photos: MediaItem[]; code: MediaItem[] }>>;
   contacts: ApiContact[];
   moodItems: ApiMoodItem[];
 }
@@ -287,6 +328,8 @@ export function usePortfolio() {
           workDates: buildWorkDates(api),
           workTags: buildWorkTags(api),
           workDetail: buildWorkDetail(api),
+          workLinks: buildWorkLinks(api),
+          workMedia: buildWorkMedia(api),
           contacts: api.contacts,
           moodItems: api.moodItems,
         });

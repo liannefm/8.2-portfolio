@@ -37,6 +37,7 @@ $projects = $db->query("SELECT * FROM projects WHERE profile_id = $pid ORDER BY 
 foreach ($projects as &$p) {
     $p['tags'] = $db->query("SELECT tag FROM project_tags WHERE project_id = {$p['id']} ORDER BY sort_order")->fetchAll(PDO::FETCH_COLUMN);
     $p['highlights'] = $db->query("SELECT * FROM project_highlights WHERE project_id = {$p['id']} ORDER BY sort_order")->fetchAll();
+    $p['media'] = $db->query("SELECT * FROM project_media WHERE project_id = {$p['id']} ORDER BY sort_order")->fetchAll();
 }
 unset($p);
 
@@ -343,6 +344,19 @@ body::before{
 /* project edit toggle */
 .proj-edit{display:none;margin-top:14px;padding:18px;background:var(--cream);border:2.5px solid var(--ink);border-radius:12px;box-shadow:var(--shadow-hard)}
 .proj-edit.open{display:block}
+
+/* project media-beheer */
+.media-mgr{margin-top:18px;padding-top:16px;border-top:2px dashed rgba(16,18,46,.25)}
+.media-mgr h4{font-family:var(--font-display);font-weight:800;font-size:15px;margin:0 0 4px}
+.media-hint{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.media-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.media-card{position:relative;border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:8px;box-shadow:2px 2px 0 rgba(8,10,40,.3)}
+.media-card img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px;border:2px solid var(--ink);display:block;margin-bottom:8px}
+.media-card input{width:100%;padding:6px 8px;border:2px solid var(--cream-3);border-radius:6px;font-family:var(--font-body);font-size:12px;margin-bottom:6px}
+.media-kind{position:absolute;top:14px;left:14px;font-family:var(--font-mono);font-size:10px;font-weight:700;padding:2px 8px;border:2px solid var(--ink);border-radius:20px;background:var(--lime);color:var(--ink)}
+.media-kind.code{background:var(--yellow)}
+.media-actions{display:flex;gap:6px;align-items:center}
+.media-add{padding:14px;border:2px dashed rgba(16,18,46,.35);border-radius:10px;background:rgba(255,255,255,.5)}
 
 /* ═══ MOOD BOARD (portfolio-stijl) ═══ */
 .frame{
@@ -737,11 +751,52 @@ body::before{
                     <p><?= $proj['thumbnail_url'] ? htmlspecialchars($proj['thumbnail_url']) : 'klik om te uploaden' ?></p>
                   </div>
                 </div>
+                <div class="dual">
+                  <div class="field"><label>Live website (optioneel)</label><input name="live_url" placeholder="https://..." value="<?= htmlspecialchars($proj['live_url'] ?? '') ?>"></div>
+                  <div class="field"><label>GitHub link</label><input name="source_url" placeholder="https://github.com/..." value="<?= htmlspecialchars($proj['source_url'] ?? '') ?>"></div>
+                </div>
+                <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..." value="<?= htmlspecialchars($proj['video_url'] ?? '') ?>"></div>
                 <div style="display:flex;gap:8px">
                   <button type="submit" class="btn btn-pink">Opslaan ✦</button>
                   <button type="button" class="btn-del" onclick="deleteItem('project',<?= $proj['id'] ?>,this)">verwijderen</button>
                 </div>
               </form>
+
+              <!-- Media-beheer: foto's en code-screenshots -->
+              <div class="media-mgr">
+                <h4>Foto's &amp; code</h4>
+                <p class="media-hint">Foto's van het project en screenshots van code met uitleg. Uitleg = de tekst die onder de code komt.</p>
+                <div class="media-list" id="media-list-<?= $proj['id'] ?>">
+                  <?php foreach ($proj['media'] as $m): ?>
+                  <div class="media-card" data-id="<?= $m['id'] ?>">
+                    <img src="../uploads/projects/<?= htmlspecialchars($m['image_url']) ?>" alt="">
+                    <span class="media-kind <?= $m['kind'] ?>"><?= $m['kind'] === 'code' ? 'code' : 'foto' ?></span>
+                    <form onsubmit="return saveForm(this,'update_project_media')">
+                      <input type="hidden" name="id" value="<?= $m['id'] ?>">
+                      <input name="caption_nl" placeholder="Bijschrift / uitleg (NL)" value="<?= htmlspecialchars($m['caption_nl'] ?? '') ?>">
+                      <input name="caption_en" placeholder="Caption / explanation (EN)" value="<?= htmlspecialchars($m['caption_en'] ?? '') ?>">
+                      <div class="media-actions">
+                        <button type="submit" class="btn btn-pink" style="padding:5px 12px;font-size:12px">Opslaan</button>
+                        <button type="button" class="btn-del" onclick="deleteMedia(<?= $m['id'] ?>,this)">verwijderen</button>
+                      </div>
+                    </form>
+                  </div>
+                  <?php endforeach; ?>
+                </div>
+                <form class="media-add" onsubmit="return addMedia(this,<?= $proj['id'] ?>)">
+                  <div class="dual">
+                    <div class="field"><label>Type</label>
+                      <select name="kind"><option value="photo">Foto</option><option value="code">Code (met uitleg)</option></select>
+                    </div>
+                    <div class="field"><label>Afbeelding</label><input type="file" name="image" accept="image/*" required></div>
+                  </div>
+                  <div class="dual">
+                    <div class="field"><label>Bijschrift / uitleg (NL)</label><input name="caption_nl"></div>
+                    <div class="field"><label>Caption / explanation (EN)</label><input name="caption_en"></div>
+                  </div>
+                  <button type="submit" class="btn btn-pink" style="padding:7px 14px;font-size:13px">+ Media toevoegen</button>
+                </form>
+              </div>
             </div>
           </div>
           <?php endforeach; ?>
@@ -1080,6 +1135,32 @@ function toggleProjEdit(id) {
   document.getElementById('proj-edit-' + id).classList.toggle('open');
 }
 
+// ═══ PROJECT MEDIA (foto's & code) ═══
+async function addMedia(form, projectId) {
+  const fd = new FormData(form);
+  fd.append('action', 'create_project_media');
+  fd.append('project_id', projectId);
+  try {
+    const res = await fetch(API, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.ok) { toast('Media toegevoegd ✦'); location.reload(); }
+    else toast(data.error || 'Fout', true);
+  } catch (e) { toast('Fout: ' + e.message, true); }
+  return false;
+}
+
+async function deleteMedia(id, btn) {
+  if (!confirm('Deze media verwijderen?')) return;
+  const fd = new FormData();
+  fd.append('action', 'delete_project_media');
+  fd.append('id', id);
+  try {
+    const res = await fetch(API, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.ok) { btn.closest('.media-card').remove(); toast('Verwijderd'); }
+  } catch (e) { toast('Fout', true); }
+}
+
 // ═══ MOOD BOARD DRAG & DROP ═══
 (function() {
   const board = document.getElementById('mood-board');
@@ -1388,6 +1469,12 @@ function addProject() {
           <div class="field"><label>Highlights (1 per line)</label><textarea name="highlights_en" rows="3"></textarea></div>
         </div>
         <div class="field"><label>Thumbnail</label><div class="file-area"><input type="file" name="thumbnail" accept="image/*"><p>klik om te uploaden</p></div></div>
+        <div class="dual">
+          <div class="field"><label>Live website (optioneel)</label><input name="live_url" placeholder="https://..."></div>
+          <div class="field"><label>GitHub link</label><input name="source_url" placeholder="https://github.com/..."></div>
+        </div>
+        <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..."></div>
+        <p class="media-hint">Foto's &amp; code kun je toevoegen zodra het project is opgeslagen.</p>
         <button type="submit" class="btn btn-pink">Project toevoegen ✦</button>
       </form>
     </div>
