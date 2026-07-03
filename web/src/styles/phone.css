@@ -210,9 +210,7 @@
 }
 .phone-body .cv-wrap { padding: 0; }
 .phone-body .cvx-head { max-width: none; flex-direction: column; align-items: flex-start; gap: 12px; }
-.phone-body .cvx-doc { grid-template-columns: 1fr; max-width: none; }
-.phone-body .cvx-side { padding: 22px 18px; }
-.phone-body .cvx-main { padding: 22px 18px 26px; }
+.phone-body .cvx-img { max-width: none; }
 .phone-body .cvx-head .sec-title { white-space: normal; }
 .phone-body .work-detail .sec-title { font-size: 26px; }
 .phone-body .wd-grid { grid-template-columns: 1fr; }
