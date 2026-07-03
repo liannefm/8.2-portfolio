@@ -233,7 +233,7 @@
   margin: 0; border: 2.5px solid var(--ink); border-radius: 12px; overflow: hidden;
   background: #fff; box-shadow: var(--shadow-hard);
 }
-.wd-code img { display: block; width: 100%; object-fit: contain; background: #1e1e2e; }
+.wd-code img { display: block; width: 100%; max-height: 380px; object-fit: contain; background: #1e1e2e; }
 .wd-code figcaption {
   font-size: 13.5px; line-height: 1.55; color: #2a2c44;
   padding: 12px 16px; border-top: 2.5px solid var(--ink); background: var(--cream);

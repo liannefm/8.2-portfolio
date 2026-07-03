@@ -10,6 +10,13 @@ try {
     $action = $_POST['action'] ?? '';
     $pid = 1;
 
+    // Als de upload groter is dan post_max_size gooit PHP álle POST-data weg
+    if ($action === '' && empty($_POST) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Upload te groot — het bestand mag max ' . ini_get('post_max_size') . ' zijn']);
+        exit;
+    }
+
     switch ($action) {
 
         // ── PROFILE ──
@@ -178,6 +185,19 @@ try {
                 move_uploaded_file($_FILES['thumbnail']['tmp_name'], __DIR__ . '/../uploads/projects/' . $fname);
                 $db->prepare("UPDATE projects SET thumbnail_url=? WHERE id=?")->execute([$fname, $projId]);
             }
+            if (!empty($_FILES['video_file']['name'])) {
+                $ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
+                $fname = 'video-' . $projId . '.' . $ext;
+                if (in_array($ext, ['mp4', 'webm', 'ogg', 'mov'])
+                    && $_FILES['video_file']['error'] === UPLOAD_ERR_OK
+                    && move_uploaded_file($_FILES['video_file']['tmp_name'], __DIR__ . '/../uploads/projects/' . $fname)) {
+                    $db->prepare("UPDATE projects SET video_url=? WHERE id=?")->execute([$fname, $projId]);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Video uploaden mislukt (alleen mp4/webm/ogg/mov, max ' . ini_get('upload_max_filesize') . ')']);
+                    break;
+                }
+            }
             $tags = array_filter(array_map('trim', explode(',', $_POST['tags'] ?? '')));
             foreach ($tags as $i => $tag) {
                 $db->prepare("INSERT INTO project_tags (project_id,tag,sort_order) VALUES (?,?,?)")->execute([$projId, $tag, $i + 1]);
@@ -199,6 +219,19 @@ try {
                 $fname = 'work-' . $id . '.' . $ext;
                 move_uploaded_file($_FILES['thumbnail']['tmp_name'], __DIR__ . '/../uploads/projects/' . $fname);
                 $db->prepare("UPDATE projects SET thumbnail_url=? WHERE id=?")->execute([$fname, $id]);
+            }
+            if (!empty($_FILES['video_file']['name'])) {
+                $ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
+                $fname = 'video-' . $id . '.' . $ext;
+                if (in_array($ext, ['mp4', 'webm', 'ogg', 'mov'])
+                    && $_FILES['video_file']['error'] === UPLOAD_ERR_OK
+                    && move_uploaded_file($_FILES['video_file']['tmp_name'], __DIR__ . '/../uploads/projects/' . $fname)) {
+                    $db->prepare("UPDATE projects SET video_url=? WHERE id=?")->execute([$fname, $id]);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Video uploaden mislukt (alleen mp4/webm/ogg/mov, max ' . ini_get('upload_max_filesize') . ')']);
+                    break;
+                }
             }
             $db->prepare("DELETE FROM project_tags WHERE project_id=?")->execute([$id]);
             $tags = array_filter(array_map('trim', explode(',', $_POST['tags'] ?? '')));

@@ -278,10 +278,11 @@ export interface WorkLinks {
 }
 
 function buildWorkLinks(data: ApiData): WorkLinks[] {
+  // video_url is óf een externe link (YouTube/Vimeo) óf een geüpload bestand in uploads/projects
   return data.projects.map(p => ({
     live: p.live_url || '',
     source: p.source_url || '',
-    video: p.video_url || '',
+    video: p.video_url ? (/^https?:\/\//i.test(p.video_url) ? p.video_url : MEDIA_BASE + p.video_url) : '',
   }));
 }
 

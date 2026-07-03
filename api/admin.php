@@ -755,7 +755,10 @@ body::before{
                   <div class="field"><label>Live website (optioneel)</label><input name="live_url" placeholder="https://..." value="<?= htmlspecialchars($proj['live_url'] ?? '') ?>"></div>
                   <div class="field"><label>GitHub link</label><input name="source_url" placeholder="https://github.com/..." value="<?= htmlspecialchars($proj['source_url'] ?? '') ?>"></div>
                 </div>
-                <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..." value="<?= htmlspecialchars($proj['video_url'] ?? '') ?>"></div>
+                <div class="dual">
+                  <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..." value="<?= htmlspecialchars($proj['video_url'] ?? '') ?>"></div>
+                  <div class="field"><label>…of upload een videobestand (mp4/webm, max 40&nbsp;MB)</label><input type="file" name="video_file" accept="video/mp4,video/webm,video/ogg,video/quicktime"></div>
+                </div>
                 <div style="display:flex;gap:8px">
                   <button type="submit" class="btn btn-pink">Opslaan ✦</button>
                   <button type="button" class="btn-del" onclick="deleteItem('project',<?= $proj['id'] ?>,this)">verwijderen</button>
@@ -1065,6 +1068,11 @@ function toggleEdit(el) {
   const form = el.querySelector('.edit-form');
   if (form) form.classList.toggle('open');
 }
+
+// Alle formulieren gaan via fetch — blokkeer de klassieke submit.
+// (De async onsubmit-handlers geven een Promise terug, geen false, dus de browser
+// zou anders óók nog navigeren en daarmee lopende uploads afbreken.)
+document.addEventListener('submit', e => e.preventDefault());
 
 // ═══ SAVE FORM ═══
 async function saveForm(form, action) {
@@ -1473,7 +1481,10 @@ function addProject() {
           <div class="field"><label>Live website (optioneel)</label><input name="live_url" placeholder="https://..."></div>
           <div class="field"><label>GitHub link</label><input name="source_url" placeholder="https://github.com/..."></div>
         </div>
-        <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..."></div>
+        <div class="dual">
+          <div class="field"><label>Video (optioneel — YouTube/Vimeo link)</label><input name="video_url" placeholder="https://youtube.com/watch?v=..."></div>
+          <div class="field"><label>…of upload een videobestand (mp4/webm, max 40&nbsp;MB)</label><input type="file" name="video_file" accept="video/mp4,video/webm,video/ogg,video/quicktime"></div>
+        </div>
         <p class="media-hint">Foto's &amp; code kun je toevoegen zodra het project is opgeslagen.</p>
         <button type="submit" class="btn btn-pink">Project toevoegen ✦</button>
       </form>
