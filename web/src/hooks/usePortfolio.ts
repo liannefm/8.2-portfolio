@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import type { Lang } from '@/types';
 import type { LangStrings, WorkDetailData } from '@/i18n/strings';
 
-const API_URL = 'http://localhost/8.2-portfolio/api/portfolio.php';
-const MEDIA_BASE = 'http://localhost/8.2-portfolio/uploads/projects/';
+const API_URL = 'https://api.liannemeiresonne.com/portfolio.php';
+const MEDIA_BASE = 'https://liannemeiresonne.com/uploads/projects/';
 
 interface ApiProfile {
   name: string;
